@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Minny ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{--pink:#ff4da6;--purple:#7a3cff;}
+html,body{margin:0;padding:0;width:100%;height:100%;background:#000;color:white;font-family:'Poppins',sans-serif;overflow:hidden}
+
+#heroBg{
+  position:fixed;inset:0;
+  background:url('assets/images/hero-opening-love.jpg') center/cover no-repeat;
+  filter:blur(2px) brightness(.4);
+  z-index:-3;
+  animation:kenburns 30s ease-in-out infinite alternate;
+}
+
+/* FORCE ROMANTIC BG */
+#romanticBg{
+  position:fixed;inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 2s ease;
+  z-index:-2;
+  filter:brightness(.6);
+}
+
+/* HAPPY BIRTHDAY FX */
+#birthdayFX{
+  position:fixed;inset:0;
+  pointer-events:none;
+  z-index:50;
+  overflow:hidden;
+}
+
+.fx-heart{
+  position:absolute;
+  font-size:30px;
+  animation:floatUp 6s linear infinite;
+}
+
+@keyframes floatUp{
+  from{transform:translateY(100vh) scale(1);opacity:1}
+  to{transform:translateY(-20vh) scale(1.5);opacity:0}
+}
+
+.firework{
+  position:absolute;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:#ff4da6;
+  animation:explode 1.5s ease-out forwards;
+}
+
+@keyframes explode{
+  from{transform:scale(0);opacity:1}
+  to{transform:scale(12);opacity:0}
+}
+
+@keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.15)}}
+
+.scene{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.scene.active{display:flex}
+
+.glass{
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(18px);
+  border-radius:30px;
+  padding:40px;
+  box-shadow:0 0 80px rgba(255,77,166,.5);
+  max-width:540px;width:92%;
+  text-align:center
+}
+
+h1{font-family:'Dancing Script',cursive;color:#ff9ad5;font-size:2.8rem;text-shadow:0 0 20px #ff4da6}
+
+button{padding:14px 30px;border-radius:40px;border:none;background:linear-gradient(45deg,var(--pink),var(--purple));color:white;font-weight:600;cursor:pointer;box-shadow:0 8px 25px rgba(255,77,166,.6);margin:10px}
+button:hover{transform:scale(1.08)}
+
+input,textarea{padding:14px;border-radius:20px;border:1px solid var(--pink);background:rgba(255,255,255,.1);color:white;width:90%;text-align:center}
+
+.musicBtn{position:fixed;top:20px;right:20px;width:50px;height:50px;border-radius:50%;font-size:20px;z-index:999}
+
+.future-photo{
+  width:100%;
+  border-radius:20px;
+  box-shadow:0 0 50px rgba(255,105,180,.8);
+  animation:kenburns 20s ease-in-out infinite alternate;
+  border:2px solid rgba(255,255,255,.3);
+}
+
+#noBtn{position:relative}
+</style>
+</head>
+<body>
+
+<div id="heroBg"></div>
+<div id="romanticBg"></div>
+<div id="birthdayFX"></div>
+
+<!-- AUDIO -->
+<audio id="musicIntro" src="assets/music/bg-music-intro-meri-jaan.mp3" preload="auto" loop></audio>
+<audio id="musicRomantic" src="assets/music/bg-music-romantic-ambience.mp3" preload="auto" loop></audio>
+<audio id="musicFinal" src="assets/music/bg-music-final-letter.mp3" preload="auto" loop></audio>
+<audio id="voiceNote" src="assets/voice/voice-note-final-message.m4a" preload="auto"></audio>
+
+<button class="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<!-- PASSWORD -->
+<div class="scene active" id="sPassword"><div class="glass">
+<h1>Secret Access 💜</h1>
+<p style="font-size:13px">
+But I’ll love you forever, steady and strong.<br>
+With silly mistakes and a heart so true,<br>
+My whole imperfect world begins with you.<br><br>
+Who am I, with flaws and love so grand?
+</p>
+<input id="passwordInput" type="password" placeholder="Enter password">
+<button onclick="checkPassword()">Unlock My Heart</button>
+</div></div>
+
+<!-- LIGHT -->
+<div class="scene" id="sLight"><div class="glass">
+<h1>It’s dark without you…</h1>
+<button onclick="goToSurprise()">💡 Turn the Light On</button>
+</div></div>
+
+<!-- SURPRISE -->
+<div class="scene" id="sSurprise"><div class="glass">
+<h1>Are you ready for the surprise? 😘</h1>
+<button onclick="startCountdown()">YES 💖</button>
+<button id="noBtn">NO 🙄</button>
+</div></div>
+
+<!-- COUNTDOWN -->
+<div class="scene" id="sCountdown"><div class="glass">
+<h1>Just for you my love</h1>
+<div id="countNum" style="font-size:90px">10</div>
+<div id="countMsg"></div>
+</div></div>
+
+<!-- BIRTHDAY -->
+<div class="scene" id="sBirthday"><div class="glass">
+<h1>🎉 Happy Birthday Minny 🎂💜 🎉</h1>
+<p style="font-size:20px">31 January 2026</p>
+<p>You are my queen, my forever, my everything 👑💖</p>
+<button onclick="goToTease()">More Surprises ✨</button>
+</div></div>
+
+<!-- FUTURE -->
+<div class="scene" id="sFuture"><div class="glass">
+<h1>Our Future Together 💞</h1>
+<img class="future-photo" 
+     src="assets/images/future-photo-traditional-evening.png"
+     onerror="this.style.border='3px solid red'; this.alt='IMAGE NOT FOUND';">
+<p>
+1 Year: More love and laughter 💕<br>
+3 Years: Stronger bond 🤝<br>
+10 Years: Forever home 🏡
+</p>
+<button onclick="goToStars()">Next 🌟</button>
+</div></div>
+
+<script>
+const PASSWORD="Your imperfect husband";
+const intro=musicIntro, romantic=musicRomantic;
+let currentMusic=null, romanticIndex=0;
+
+const romanticScenes=[
+ 'assets/images/scene-romantic-sky-couple.png',
+ 'assets/images/scene-romantic-generated.png'
+];
+
+// PRELOAD + FORCE SHOW
+romanticScenes.forEach(src=>{const i=new Image();i.src=src;});
+
+function switchMusic(track){
+ if(currentMusic){currentMusic.pause();currentMusic.currentTime=0;}
+ currentMusic=track;
+ track.volume=.7;
+ track.play();
+}
+
+function toggleMusic(){
+ if(currentMusic){currentMusic.paused?currentMusic.play():currentMusic.pause();}
+}
+
+function show(id){
+ document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+function rotateRomanticBg(){
+ const bg=document.getElementById('romanticBg');
+ bg.style.backgroundImage=`url('${romanticScenes[romanticIndex]}')`;
+ bg.style.opacity=0.5;
+ romanticIndex=(romanticIndex+1)%romanticScenes.length;
+}
+
+function spawnBirthdayFX(){
+ const fx=document.getElementById('birthdayFX');
+ for(let i=0;i<25;i++){
+   const h=document.createElement('div');
+   h.className='fx-heart';
+   h.textContent='💖';
+   h.style.left=Math.random()*100+'vw';
+   h.style.animationDelay=Math.random()*2+'s';
+   fx.appendChild(h);
+   setTimeout(()=>h.remove(),6000);
+ }
+ for(let i=0;i<8;i++){
+   const f=document.createElement('div');
+   f.className='firework';
+   f.style.left=Math.random()*100+'vw';
+   f.style.top=Math.random()*50+'vh';
+   fx.appendChild(f);
+   setTimeout(()=>f.remove(),1500);
+ }
+}
+
+function checkPassword(){
+ if(passwordInput.value.trim()===PASSWORD){
+   switchMusic(intro);
+   show('sLight');
+   setupRunningNo();
+ }
+ else alert("Wrong password baby 💔");
+}
+
+function setupRunningNo(){
+ const no=document.getElementById('noBtn');
+ no.onmouseover=no.onclick=()=>{
+   no.style.transform=`translate(${Math.random()*200-100}px,${Math.random()*200-100}px)`
+ }
+}
+
+function goToSurprise(){show('sSurprise');}
+
+function startCountdown(){
+ show('sCountdown');
+ let n=10;
+ const t=setInterval(()=>{
+   countNum.textContent=n;
+   n--;
+   if(n<0){
+     clearInterval(t);
+     show('sBirthday');
+     spawnBirthdayFX();   // 🎉 ANIMATIONS HERE
+   }
+ },1200);
+}
+
+function goToTease(){
+ rotateRomanticBg();
+ switchMusic(romantic);
+ show('sFuture');
+}
+
+function goToStars(){
+ rotateRomanticBg();
+ show('sFuture');
+}
+</script>
+</body>
+</html>
