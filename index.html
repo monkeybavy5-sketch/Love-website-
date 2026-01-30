@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For Minny 🌙✨</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+:root{--pink:#ff4da6;--purple:#7a3cff;}
+html,body{margin:0;padding:0;width:100%;height:100%;background:#000;color:white;font-family:'Poppins',sans-serif;overflow:hidden}
+
+/* SKY + STARS */
+#skyCanvas{position:fixed;inset:0;z-index:-5}
+#moon{
+  position:fixed;top:40px;right:40px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,#fff,#ddd);
+  box-shadow:0 0 40px #fff;
+  z-index:-4;opacity:0;transition:opacity 2s;
+}
+
+/* LIGHTNING */
+#lightning{
+  position:fixed;inset:0;
+  background:white;opacity:0;
+  z-index:1000;pointer-events:none;
+}
+
+/* HERO BACK */
+#heroBg{
+  position:fixed;inset:0;
+  background:url('assets/images/hero-opening-love.jpg') center/cover no-repeat;
+  filter:blur(3px) brightness(.25);
+  z-index:-6;
+}
+
+/* SCENES */
+.scene{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
+.scene.active{display:flex}
+
+.glass{
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(18px);
+  border-radius:30px;
+  padding:40px;
+  box-shadow:0 0 80px rgba(255,77,166,.6);
+  max-width:560px;width:92%;
+  text-align:center
+}
+
+h1{font-family:'Dancing Script',cursive;color:#ff9ad5;font-size:2.8rem;text-shadow:0 0 20px #ff4da6}
+button{padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(45deg,var(--pink),var(--purple));color:white;font-weight:600;cursor:pointer;box-shadow:0 8px 30px rgba(255,77,166,.7);margin:10px}
+button:hover{transform:scale(1.08)}
+input,textarea{padding:14px;border-radius:20px;border:1px solid var(--pink);background:rgba(255,255,255,.1);color:white;width:90%;text-align:center}
+
+/* SHOOTING STAR */
+.shooting{
+  position:fixed;width:150px;height:2px;
+  background:linear-gradient(90deg,white,transparent);
+  animation:shoot 1s linear forwards;
+  z-index:-3;
+}
+@keyframes shoot{
+  from{transform:translateX(-200px) translateY(0)}
+  to{transform:translateX(100vw) translateY(200px);opacity:0}
+}
+
+/* BIRTHDAY CATS */
+.cat{
+  position:fixed;font-size:60px;
+  animation:catPop 3s ease-out forwards;
+}
+@keyframes catPop{
+  from{transform:scale(0);opacity:0}
+  to{transform:scale(1);opacity:1}
+}
+
+/* LOVE METER */
+#loveMeterWrap{margin:20px}
+#loveBar{width:100%;height:20px;background:#333;border-radius:10px;overflow:hidden}
+#loveFill{width:0%;height:100%;background:linear-gradient(90deg,#ff4da6,#ff9ad5);transition:width 1s}
+
+/* FUTURE IMAGES */
+.future-img{
+  width:100%;border-radius:20px;
+  margin:10px 0;
+  box-shadow:0 0 40px rgba(255,105,180,.8);
+}
+
+/* MUSIC */
+.musicBtn{position:fixed;top:20px;right:20px;width:50px;height:50px;border-radius:50%;font-size:20px;z-index:999}
+</style>
+</head>
+<body>
+
+<canvas id="skyCanvas"></canvas>
+<div id="heroBg"></div>
+<div id="moon"></div>
+<div id="lightning"></div>
+
+<!-- AUDIO -->
+<audio id="musicIntro" src="assets/music/bg-music-intro-meri-jaan.mp3" loop></audio>
+<audio id="musicRomantic" src="assets/music/bg-music-romantic-ambience.mp3" loop></audio>
+<audio id="musicFinal" src="assets/music/bg-music-final-letter.mp3" loop></audio>
+<audio id="sunnyMessage" src="assets/voice/sunnys-message.mp3"></audio>
+
+<button class="musicBtn" onclick="toggleMusic()">🎵</button>
+
+<!-- PASSWORD -->
+<div class="scene active" id="sPassword"><div class="glass">
+<h1>Secret Access 💜</h1>
+<p style="font-size:13px">
+But I’ll love you forever, steady and strong.<br>
+With silly mistakes and a heart so true,<br>
+My whole imperfect world begins with you.<br><br>
+Who am I, with flaws and love so grand?
+</p>
+<input id="passwordInput" placeholder="Enter password">
+<button onclick="checkPassword()">Unlock My Heart</button>
+</div></div>
+
+<!-- LIGHT -->
+<div class="scene" id="sLight"><div class="glass">
+<h1>Darkness... 🌑</h1>
+<p>Turn on the light my love</p>
+<button onclick="turnOnLight()">⚡ Turn On The Light</button>
+</div></div>
+
+<!-- COUNTDOWN -->
+<div class="scene" id="sCountdown"><div class="glass">
+<h1>Get Ready 💖</h1>
+<div id="countNum" style="font-size:90px">10</div>
+</div></div>
+
+<!-- BIRTHDAY -->
+<div class="scene" id="sBirthday"><div class="glass">
+<h1>🎉 HAPPY BIRTHDAY MINNY 🎂💜</h1>
+<p>You are my queen 👑</p>
+<button onclick="goToFuture()">See Our Journey ✨</button>
+</div></div>
+
+<!-- FUTURE -->
+<div class="scene" id="sFuture"><div class="glass">
+<h1>Our Journey Together 📸</h1>
+
+<h3>1st Year</h3>
+<img class="future-img" src="assets/images/future-photo-traditional-evening.png">
+
+<h3>2nd Year</h3>
+<img class="future-img" src="assets/images/scene-romantic-sky-couple.png">
+
+<h3>3rd Year</h3>
+<img class="future-img" src="assets/images/scene-romantic-generated.png">
+
+<button onclick="goToLoveMeter()">Fill Our Love 💗</button>
+</div></div>
+
+<!-- LOVE METER -->
+<div class="scene" id="sLove"><div class="glass">
+<h1>Love Potion 💖</h1>
+<div id="loveMeterWrap">
+<div id="loveBar"><div id="loveFill"></div></div>
+<p id="lovePercent">0%</p>
+</div>
+<button onclick="addLove()">Add Love 💕</button>
+</div></div>
+
+<!-- FINAL -->
+<div class="scene" id="sFinal"><div class="glass">
+<h1>From Sunny 💜</h1>
+<p>I love you forever Minny ❤️</p>
+<button onclick="playSunnyMessage()">Play Sunny's Message 🎤</button>
+</div></div>
+
+<script>
+const PASSWORD="Your imperfect husband";
+
+const intro=musicIntro, romantic=musicRomantic, finalMusic=musicFinal, sunnyMsg=sunnyMessage;
+let currentMusic=null, love=0;
+
+/* SKY STARS */
+const canvas=document.getElementById('skyCanvas');
+const ctx=canvas.getContext('2d');
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+resize();onresize=resize;
+
+const stars=Array.from({length:150},()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2}));
+function drawStars(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle="white";
+ stars.forEach(s=>{
+   ctx.globalAlpha=Math.random();
+   ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+ });
+ requestAnimationFrame(drawStars);
+}
+drawStars();
+
+function shootingStar(){
+ const s=document.createElement('div');
+ s.className='shooting';
+ s.style.top=Math.random()*200+'px';
+ document.body.appendChild(s);
+ setTimeout(()=>s.remove(),1200);
+}
+setInterval(shootingStar,6000);
+
+/* MUSIC */
+function switchMusic(t){
+ if(currentMusic){currentMusic.pause();currentMusic.currentTime=0;}
+ currentMusic=t; t.volume=.7; t.play();
+}
+function toggleMusic(){if(currentMusic){currentMusic.paused?currentMusic.play():currentMusic.pause()}}
+
+/* SCENES */
+function show(id){
+ document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+}
+
+/* PASSWORD */
+function checkPassword(){
+ if(passwordInput.value.trim()===PASSWORD){
+   switchMusic(intro);
+   show('sLight');
+ } else alert("Wrong password 💔");
+}
+
+/* LIGHTNING + MOON */
+function turnOnLight(){
+ const l=document.getElementById('lightning');
+ l.style.opacity=1;
+ setTimeout(()=>l.style.opacity=0,100);
+ setTimeout(()=>l.style.opacity=1,200);
+ setTimeout(()=>l.style.opacity=0,300);
+ document.getElementById('moon').style.opacity=1;
+ show('sCountdown');
+ startCountdown();
+}
+
+/* COUNTDOWN */
+function startCountdown(){
+ let n=10;
+ const t=setInterval(()=>{
+   countNum.textContent=n;
+   n--;
+   if(n<0){
+     clearInterval(t);
+     show('sBirthday');
+     birthdayCats();
+   }
+ },1200);
+}
+
+/* BIRTHDAY CATS */
+function birthdayCats(){
+ for(let i=0;i<8;i++){
+   const c=document.createElement('div');
+   c.className='cat';
+   c.textContent='😺🎉';
+   c.style.left=Math.random()*80+'vw';
+   c.style.top=Math.random()*60+'vh';
+   document.body.appendChild(c);
+   setTimeout(()=>c.remove(),3000);
+ }
+}
+
+/* FUTURE */
+function goToFuture(){
+ switchMusic(romantic);
+ show('sFuture');
+}
+
+/* LOVE METER */
+function goToLoveMeter(){show('sLove');}
+function addLove(){
+ love=Math.min(100,love+20);
+ document.getElementById('loveFill').style.width=love+'%';
+ document.getElementById('lovePercent').textContent=love+'%';
+ if(love===100){
+   hugeCelebration();
+   show('sFinal');
+ }
+}
+
+/* HUGE CELEBRATION */
+function hugeCelebration(){
+ for(let i=0;i<15;i++) birthdayCats();
+}
+
+/* FINAL */
+function playSunnyMessage(){
+ switchMusic(finalMusic);
+ sunnyMsg.play();
+}
+</script>
+</body>
+</html>
