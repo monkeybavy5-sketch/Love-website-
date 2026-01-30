@@ -2,172 +2,454 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Minny 🌙✨</title>
+<title>For Minny ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
-:root{--pink:#ff4da6;--purple:#7a3cff;}
-html,body{margin:0;padding:0;width:100%;height:100%;background:#000;color:white;font-family:'Poppins',sans-serif;overflow:hidden}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;height:100%;background:#050008;color:#fff;font-family:'Segoe UI',cursive,sans-serif;overflow:hidden}
 
-/* SKY + STARS */
-#skyCanvas{position:fixed;inset:0;z-index:-5}
-#moon{position:fixed;top:40px;right:40px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,#fff,#ddd);box-shadow:0 0 40px #fff;z-index:-4;opacity:0;transition:opacity 2s}
+:root{
+  --pink:#ff5fd1;
+  --purple:#7b5cff;
+  --glass:rgba(255,255,255,.08);
+}
 
-/* LIGHTNING */
-#lightning{position:fixed;inset:0;background:white;opacity:0;z-index:1000;pointer-events:none}
+.scene{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  opacity:0;pointer-events:none;transition:opacity 1.2s ease;
+}
+.scene.active{opacity:1;pointer-events:auto}
 
-/* HERO BACK */
-#heroBg{position:fixed;inset:0;background:url('assets/images/hero-opening-love.jpg') center/cover no-repeat;filter:blur(3px) brightness(.25);z-index:-6}
+.glass{
+  background:var(--glass);
+  backdrop-filter:blur(16px);
+  border-radius:26px;
+  padding:32px;
+  box-shadow:0 0 60px rgba(255,0,200,.35);
+  text-align:center;
+  max-width:92vw;
+}
 
-/* SCENES */
-.scene{position:absolute;inset:0;display:none;align-items:center;justify-content:center}
-.scene.active{display:flex}
+h1,h2{font-weight:400;letter-spacing:1.5px}
+button,input,textarea{
+  padding:12px 22px;border-radius:26px;border:none;outline:none;font-size:15px
+}
+button{
+  background:linear-gradient(45deg,var(--pink),var(--purple));
+  color:#fff;cursor:pointer;
+  box-shadow:0 0 25px rgba(255,95,209,.7);
+  transition:.25s
+}
+button:hover{transform:scale(1.08);box-shadow:0 0 45px rgba(255,95,209,1)}
 
-.glass{background:rgba(0,0,0,.65);backdrop-filter:blur(18px);border-radius:30px;padding:40px;box-shadow:0 0 80px rgba(255,77,166,.6);max-width:560px;width:92%;text-align:center}
+.nav{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 
-h1{font-family:'Dancing Script',cursive;color:#ff9ad5;font-size:2.8rem;text-shadow:0 0 20px #ff4da6}
-button{padding:14px 32px;border-radius:40px;border:none;background:linear-gradient(45deg,var(--pink),var(--purple));color:white;font-weight:600;cursor:pointer;box-shadow:0 8px 30px rgba(255,77,166,.7);margin:10px}
-button:hover{transform:scale(1.08)}
-input,textarea{padding:14px;border-radius:20px;border:1px solid var(--pink);background:rgba(255,255,255,.1);color:white;width:90%;text-align:center}
+#heroBg{
+  position:fixed;inset:0;
+  background:url('assets/images/hero-opening-love.jpg') center/cover no-repeat;
+  filter:blur(2px) brightness(.6);
+  z-index:-2;opacity:0;transition:opacity 2s ease
+}
 
-/* SHOOTING STAR */
-.shooting{position:fixed;width:150px;height:2px;background:linear-gradient(90deg,white,transparent);animation:shoot 1s linear forwards;z-index:-3}
-@keyframes shoot{from{transform:translateX(-200px)}to{transform:translateX(100vw) translateY(200px);opacity:0}}
+/* Spark flash */
+#spark{position:fixed;inset:0;background:radial-gradient(circle,rgba(255,255,255,.9),rgba(255,255,255,0));opacity:0;pointer-events:none;z-index:10}
 
-/* BIRTHDAY CATS */
-.cat{position:fixed;font-size:60px;animation:catPop 3s ease-out forwards}
-@keyframes catPop{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+/* Hearts */
+.heart{position:absolute;font-size:24px;animation:floatUp 6s linear forwards}
+@keyframes floatUp{from{transform:translateY(0);opacity:1}to{transform:translateY(-120vh);opacity:0}}
 
-/* LOVE METER */
-#loveBar{width:100%;height:20px;background:#333;border-radius:10px;overflow:hidden}
-#loveFill{width:0%;height:100%;background:linear-gradient(90deg,#ff4da6,#ff9ad5);transition:width 1s}
+/* Confetti */
+.confetti{position:absolute;width:8px;height:14px;background:hsl(var(--h),100%,60%);animation:fall 4s linear forwards}
+@keyframes fall{from{transform:translateY(-20vh) rotate(0)}to{transform:translateY(120vh) rotate(720deg)}}
 
-/* FUTURE IMAGES */
-.future-img{width:100%;border-radius:20px;margin:10px 0;box-shadow:0 0 40px rgba(255,105,180,.8)}
+/* Countdown */
+#countdown{font-size:84px;letter-spacing:6px}
 
-/* MUSIC */
-.musicBtn{position:fixed;top:20px;right:20px;width:50px;height:50px;border-radius:50%;font-size:20px;z-index:999}
+/* Love meter */
+#loveMeterWrap{
+  position:fixed;top:14px;left:14px;z-index:50;
+  display:none;align-items:center;gap:10px
+}
+#loveHeart{
+  width:60px;height:60px;border-radius:50%;
+  background:radial-gradient(circle at 30% 30%,#ff9be8,#ff2fb3);
+  position:relative;box-shadow:0 0 25px rgba(255,47,179,.8)
+}
+#loveFill{
+  position:absolute;bottom:0;left:0;width:100%;height:0%;
+  background:rgba(255,255,255,.4);
+  border-radius:0 0 50% 50%;
+  transition:height 1s ease
+}
+#loveLabel{font-size:12px;opacity:.85}
+
+/* NO button runaway */
+.runaway{position:absolute}
+
+/* Star map */
+.starfield{position:relative;width:320px;height:220px;background:linear-gradient(#020015,#07002a);border-radius:18px;overflow:hidden}
+.star{position:absolute;width:6px;height:6px;border-radius:50%;background:#fff;cursor:pointer;box-shadow:0 0 8px #fff}
+
+/* Heartbeat */
+#beatHeart{font-size:90px;animation:beat 1.2s infinite}
+@keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* Vintage letter */
+#letterPaper{
+  background:#f5e9d8;color:#3a2a1a;
+  padding:28px;border-radius:8px;
+  font-family:'Georgia',serif;
+  max-width:600px;
+  box-shadow:0 0 30px rgba(0,0,0,.6)
+}
 </style>
 </head>
+
 <body>
 
-<canvas id="skyCanvas"></canvas>
 <div id="heroBg"></div>
-<div id="moon"></div>
-<div id="lightning"></div>
+<div id="spark"></div>
 
+<!-- LOVE METER -->
+<div id="loveMeterWrap">
+  <div id="loveHeart"><div id="loveFill"></div></div>
+  <div id="loveLabel">Love Potion</div>
+</div>
+
+<!-- AUDIO -->
 <audio id="musicIntro" src="assets/music/bg-music-intro-meri-jaan.mp3" loop></audio>
 <audio id="musicRomantic" src="assets/music/bg-music-romantic-ambience.mp3" loop></audio>
 <audio id="musicFinal" src="assets/music/bg-music-final-letter.mp3" loop></audio>
-<audio id="sunnyMessage" src="assets/voice/sunnys-message.mp3"></audio>
+<audio id="voiceNote" src="assets/voice/voice-note-final-message.m4a"></audio>
 
-<button class="musicBtn" onclick="toggleMusic()">🎵</button>
+<!-- ========== SCENES ========== -->
 
 <!-- PASSWORD -->
-<div class="scene active" id="sPassword"><div class="glass">
-<h1>Secret Access 💜</h1>
-<input id="passwordInput" placeholder="Enter password">
-<button onclick="checkPassword()">Unlock My Heart</button>
-</div></div>
+<div id="scenePassword" class="scene active">
+  <div class="glass">
+    <h1>🔐 Secret Access</h1>
+    <input id="passwordInput" placeholder="Enter password">
+    <p style="opacity:.7;font-size:13px;">
+      But I’ll love you forever, steady and strong...
+    </p>
+    <button onclick="checkPassword()">Unlock</button>
+  </div>
+</div>
 
 <!-- LIGHT -->
-<div class="scene" id="sLight"><div class="glass">
-<h1>Darkness... 🌑</h1>
-<button onclick="turnOnLight()">⚡ Turn On The Light</button>
-</div></div>
+<div id="sceneLight" class="scene">
+  <div class="glass">
+    <h1>🌑 Darkness Before Magic</h1>
+    <button onclick="turnLightOn()">Turn the Light On</button>
+  </div>
+</div>
+
+<!-- SURPRISE -->
+<div id="sceneSurprise" class="scene">
+  <div class="glass">
+    <h1>Are you ready for the surprise?</h1>
+    <div class="nav">
+      <button onclick="goCountdown()">YES</button>
+      <button id="no1" class="runaway" onmouseover="runAway(this)">NO</button>
+    </div>
+  </div>
+</div>
 
 <!-- COUNTDOWN -->
-<div class="scene" id="sCountdown"><div class="glass">
-<h1>Get Ready 💖</h1>
-<div id="countNum" style="font-size:90px">10</div>
-</div></div>
+<div id="sceneCountdown" class="scene">
+  <div class="glass">
+    <h1>Get Ready My Love 💜</h1>
+    <div id="countdown">10</div>
+  </div>
+</div>
 
 <!-- BIRTHDAY -->
-<div class="scene" id="sBirthday"><div class="glass">
-<h1>🎉 HAPPY BIRTHDAY MINNY 🎂💜</h1>
-<button onclick="goToFuture()">See Our Journey ✨</button>
-</div></div>
+<div id="sceneBirthday" class="scene">
+  <div class="glass">
+    <h1 style="font-size:48px;">🎉 HAPPY BIRTHDAY MINNY 🎉</h1>
+    <p>You are my forever 💜</p>
+    <div class="nav">
+      <button onclick="spawnHearts();blastCrackers()">Celebrate 💖</button>
+      <button onclick="goTease()">Next</button>
+    </div>
+  </div>
+</div>
 
-<!-- FUTURE -->
-<div class="scene" id="sFuture"><div class="glass">
-<h1>Our Journey Together 📸</h1>
-<img class="future-img" src="assets/images/future-photo-traditional-evening.png">
-<img class="future-img" src="assets/images/scene-romantic-sky-couple.png">
-<img class="future-img" src="assets/images/scene-romantic-generated.png">
-<button onclick="goToCompatibility()">Check Compatibility 💞</button>
-</div></div>
+<!-- TEASE -->
+<div id="sceneTease" class="scene">
+  <div class="glass">
+    <h1>Are you ready for more surprises baby?</h1>
+    <p id="teaseMsg"></p>
+    <div class="nav">
+      <button onclick="startGames()">YES</button>
+      <button id="no2" class="runaway" onclick="teaseNo()">NO</button>
+    </div>
+  </div>
+</div>
 
 <!-- COMPATIBILITY -->
-<div class="scene" id="sCompat"><div class="glass">
-<h1>Love Compatibility 💕</h1>
-<p>Minny ❤️ Sunny</p>
-<div id="compatPercent" style="font-size:50px">0%</div>
-<button onclick="runCompatibility()">Check Now 💘</button>
-<button onclick="goToCapsule()">Future Capsule 🕰️</button>
-</div></div>
+<div id="sceneCompat" class="scene">
+  <div class="glass">
+    <h2>Let’s See Our Compatibility 💖</h2>
+    <input id="name1" placeholder="Your name"><br><br>
+    <input id="name2" placeholder="My name"><br><br>
+    <button onclick="checkCompat()">Check</button>
+    <p id="compatResult"></p>
+    <div class="nav">
+      <button onclick="nextGame()">Next</button>
+    </div>
+  </div>
+</div>
 
-<!-- FUTURE CAPSULE -->
-<div class="scene" id="sCapsule"><div class="glass">
-<h1>Future Capsule 💌</h1>
-<p>Write a message for our future selves:</p>
-<textarea id="capsuleText" rows="4" placeholder="Dear future Minny & Sunny..."></textarea>
-<br>
-<button onclick="saveCapsule()">Save Capsule 💖</button>
-<button onclick="goToLoveMeter()">Fill Love Meter 💗</button>
-</div></div>
+<!-- FUTURE -->
+<div id="sceneFuture" class="scene">
+  <div class="glass">
+    <h2>Our Future Together 💫</h2>
+    <img src="assets/images/future-photo-traditional-evening.png" style="max-width:220px;border-radius:12px"><br><br>
+    <p id="futureText">
+      One year from now, we are more in love, laughing and building dreams together.
+    </p>
+    <div class="nav">
+      <button onclick="setFuture(3)">3 Years</button>
+      <button onclick="setFuture(10)">10 Years</button>
+      <button onclick="nextGame()">Next</button>
+    </div>
+  </div>
+</div>
 
-<!-- LOVE METER -->
-<div class="scene" id="sLove"><div class="glass">
-<h1>Love Potion 💖</h1>
-<div id="loveBar"><div id="loveFill"></div></div>
-<p id="lovePercent">0%</p>
-<button onclick="addLove()">Add Love 💕</button>
-</div></div>
+<!-- STAR MAP -->
+<div id="sceneStars" class="scene">
+  <div class="glass">
+    <h2>A Sky Full of Reasons I Love You 🌌</h2>
+    <div class="starfield" id="starfield"></div>
+    <p id="starMsg"></p>
+    <div class="nav">
+      <button onclick="nextGame()">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- HEARTBEAT -->
+<div id="sceneBeat" class="scene">
+  <div class="glass">
+    <h2>Our Hearts in Sync 💓</h2>
+    <div id="beatHeart">❤️</div>
+    <p>Even when we are apart, our hearts still beat for each other.</p>
+    <div class="nav">
+      <button onclick="nextGame()">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- TIME CAPSULE -->
+<div id="sceneCapsule" class="scene">
+  <div class="glass">
+    <h2>Message to Our Future 💌</h2>
+    <textarea id="capsuleText" rows="4" placeholder="Write a message..."></textarea><br><br>
+    <button onclick="sealCapsule()">Seal Time Capsule</button>
+    <p id="capsuleMsg"></p>
+    <div class="nav">
+      <button onclick="nextGame()">Next</button>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL LETTER -->
+<div id="sceneLetter" class="scene">
+  <div class="glass">
+    <h2>My Unconditional Love 💜</h2>
+    <div id="letterPaper">
+      <p>
+        Meri jaanu bubba i love you forever till i am alive my love 💓 ❤️ 😍  
+        my forever honey  
+        ill always be yours love ❤️
+      </p>
+    </div>
+    <div class="nav">
+      <button onclick="playFinal()">Play Final</button>
+    </div>
+  </div>
+</div>
 
 <!-- FINAL -->
-<div class="scene" id="sFinal"><div class="glass">
-<h1>From Sunny 💜</h1>
-<p>I love you forever Minny ❤️</p>
-<button onclick="playSunnyMessage()">Play Sunny's Message 🎤</button>
-</div></div>
+<div id="sceneFinal" class="scene">
+  <div class="glass">
+    <h1>I am waiting honey for you</h1>
+    <p>From your love, Sunny</p>
+    <p style="opacity:.7">You can call me now love ❤️</p>
+  </div>
+</div>
 
 <script>
-const PASSWORD="Your imperfect husband";
-const intro=musicIntro, romantic=musicRomantic, finalMusic=musicFinal, sunnyMsg=sunnyMessage;
-let currentMusic=null, love=0;
+/* CORE DATA */
+const PASSWORD = "Your imperfect husband";
+const LOVE_LINES = [
+"You are my forever 💜","My heart chose you ❤️","You are my destiny ✨","My world begins with you 🌍",
+"You are my peace 🕊️","My favorite human 😘","My always and forever 💕","You are my magic ✨",
+"My heartbeat says your name 💓","This moment is just for you, my love 💖"
+];
+let loveProgress = 0;
+let teaseCount = 0;
 
-/* STARS */
-const canvas=document.getElementById('skyCanvas'),ctx=canvas.getContext('2d');
-function resize(){canvas.width=innerWidth;canvas.height=innerHeight}resize();onresize=resize;
-const stars=[...Array(150)].map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2}));
-(function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.fillStyle="white";stars.forEach(s=>{ctx.globalAlpha=Math.random();ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();});requestAnimationFrame(draw)})();
-
-/* MUSIC */
-function switchMusic(t){if(currentMusic){currentMusic.pause();currentMusic.currentTime=0;}currentMusic=t;t.volume=.7;t.play();}
-function toggleMusic(){if(currentMusic){currentMusic.paused?currentMusic.play():currentMusic.pause()}}
-
-/* SCENES */
-function show(id){document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
-
-/* FLOW */
-function checkPassword(){passwordInput.value.trim()===PASSWORD?(switchMusic(intro),show('sLight')):alert("Wrong password 💔")}
-function turnOnLight(){moon.style.opacity=1;show('sCountdown');startCountdown()}
-function startCountdown(){let n=10;const t=setInterval(()=>{countNum.textContent=n--;if(n<0){clearInterval(t);show('sBirthday');birthdayCats()}},1200)}
-function birthdayCats(){for(let i=0;i<8;i++){const c=document.createElement('div');c.className='cat';c.textContent='😺🎉';c.style.left=Math.random()*80+'vw';c.style.top=Math.random()*60+'vh';document.body.appendChild(c);setTimeout(()=>c.remove(),3000)}}
-
-function goToFuture(){switchMusic(romantic);show('sFuture')}
-function goToCompatibility(){show('sCompat')}
-function runCompatibility(){
- const percent=90+Math.floor(Math.random()*10);
- compatPercent.textContent=percent+"%";
+/* SCENE CONTROL */
+function showScene(id){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 }
-function goToCapsule(){show('sCapsule');capsuleText.value=localStorage.getItem('futureCapsule')||''}
-function saveCapsule(){localStorage.setItem('futureCapsule',capsuleText.value);alert("Future Capsule Saved 💌")}
-function goToLoveMeter(){show('sLove')}
-function addLove(){love=Math.min(100,love+20);loveFill.style.width=love+'%';lovePercent.textContent=love+'%';if(love===100){show('sFinal')}}
-function playSunnyMessage(){switchMusic(finalMusic);sunnyMsg.play()}
+
+/* PASSWORD */
+function checkPassword(){
+  if(passwordInput.value === PASSWORD){
+    heroBg.style.opacity = 1;
+    musicIntro.play();
+    showScene('sceneLight');
+  } else alert("Wrong password 😜");
+}
+
+/* LIGHT */
+function turnLightOn(){
+  spark.style.opacity = 1;
+  setTimeout(()=>spark.style.opacity=0,300);
+  setTimeout(()=>showScene('sceneSurprise'),1200);
+}
+
+/* RUNAWAY NO */
+function runAway(btn){
+  btn.style.left = Math.random()*80 + 'vw';
+  btn.style.top = Math.random()*80 + 'vh';
+}
+
+/* COUNTDOWN */
+function goCountdown(){
+  showScene('sceneCountdown');
+  startCountdown();
+}
+let c = 10;
+function startCountdown(){
+  c = 10;
+  countdown.innerText = c;
+  const t = setInterval(()=>{
+    c--;
+    countdown.innerText = c;
+    if(c<=0){
+      clearInterval(t);
+      showBirthday();
+    }
+  },1500);
+}
+function showBirthday(){
+  showScene('sceneBirthday');
+  spawnHearts(); blastCrackers();
+}
+
+/* BIRTHDAY FX */
+function spawnHearts(){
+  for(let i=0;i<40;i++){
+    const h=document.createElement('div');
+    h.className='heart';h.innerText='💖';
+    h.style.left=Math.random()*100+'vw';
+    h.style.bottom='-20px';
+    h.style.fontSize=(20+Math.random()*40)+'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+  }
+}
+function blastCrackers(){
+  for(let i=0;i<140;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+'vw';
+    c.style.setProperty('--h',Math.random()*360);
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+/* TEASE */
+function goTease(){ showScene('sceneTease'); }
+function teaseNo(){
+  teaseCount++;
+  if(teaseCount===1)teaseMsg.innerText="Really? 🙄";
+  if(teaseCount===2)teaseMsg.innerText="Esa mat kro buba";
+  if(teaseCount>=3){
+    teaseMsg.innerText="Abhi dekh tu, abhi tu gaya 😈";
+    document.getElementById('no2').style.display='none';
+  }
+}
+
+/* LOVE METER */
+function showLoveMeter(){ loveMeterWrap.style.display='flex'; }
+function addLove(){
+  loveProgress+=20;
+  if(loveProgress>100)loveProgress=100;
+  loveFill.style.height = loveProgress + '%';
+}
+
+/* GAMES FLOW */
+let gameStep = 0;
+function startGames(){
+  showLoveMeter();
+  musicIntro.pause();
+  musicRomantic.play();
+  showScene('sceneCompat');
+}
+function nextGame(){
+  addLove();
+  gameStep++;
+  if(gameStep===1) showScene('sceneFuture');
+  else if(gameStep===2) showScene('sceneStars');
+  else if(gameStep===3) showScene('sceneBeat');
+  else if(gameStep===4) showScene('sceneCapsule');
+  else if(gameStep>=5) showScene('sceneLetter');
+}
+
+/* COMPAT */
+function checkCompat(){
+  const a=name1.value.toLowerCase().trim();
+  const b=name2.value.toLowerCase().trim();
+  if((a==="sunny" && b==="minny")||(a==="minny" && b==="sunny")){
+    compatResult.innerHTML="∞ % Compatibility ♾️<br>Hehehhehe finally you got it right bubbaa 🥰🥰😍😍😘😘 my love 💓";
+  } else {
+    compatResult.innerText = Math.floor(Math.random()*100) + "% Compatibility";
+  }
+}
+
+/* FUTURE */
+function setFuture(y){
+  if(y===3)futureText.innerText="Three years from now, we are stronger, supporting each other and building our life.";
+  if(y===10)futureText.innerText="Ten years from now, you are still my home, my destiny, my forever love.";
+}
+
+/* STAR MAP */
+const reasons=["You are my forever","My turtle 🐢","My destiny","My soulmate","My heart ❤️","My sweeto"];
+function initStars(){
+  const sf=document.getElementById('starfield');
+  for(let i=0;i<8;i++){
+    const s=document.createElement('div');
+    s.className='star';
+    s.style.left=Math.random()*100+'%';
+    s.style.top=Math.random()*100+'%';
+    s.onclick=()=> starMsg.innerText = reasons[Math.floor(Math.random()*reasons.length)];
+    sf.appendChild(s);
+  }
+}
+initStars();
+
+/* CAPSULE */
+function sealCapsule(){
+  capsuleMsg.innerText="Your message has been sealed in our love time capsule 💖";
+}
+
+/* FINAL */
+function playFinal(){
+  musicRomantic.pause();
+  musicFinal.play();
+  voiceNote.play();
+  setTimeout(()=>showScene('sceneFinal'),2000);
+}
 </script>
+
 </body>
 </html>
