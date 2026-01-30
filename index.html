@@ -5,248 +5,341 @@
 <title>For Minny ❤️</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body,html{
+:root{
+  --pink:#ff4da6;
+  --purple:#7a3cff;
+}
+html,body{
   margin:0;padding:0;width:100%;height:100%;
-  background:black;color:white;
+  background:#000;color:white;
   font-family:'Poppins',sans-serif;
-  overflow-y:auto;
+  overflow:hidden;
+}
+#heroBg{
+  position:fixed;inset:0;
+  background:url('assets/images/hero-opening-love.jpg') center/cover no-repeat;
+  filter:blur(2px) brightness(.45);
+  z-index:-1;
+  animation:kenburns 25s ease-in-out infinite alternate;
+}
+@keyframes kenburns{
+  from{transform:scale(1)}
+  to{transform:scale(1.15)}
+}
+.scene{
+  position:absolute;inset:0;
+  display:none;
+  align-items:center;justify-content:center;
+}
+.scene.active{display:flex}
+.glass{
+  background:rgba(0,0,0,.65);
+  backdrop-filter:blur(18px);
+  border-radius:30px;
+  padding:40px;
+  box-shadow:0 0 60px rgba(255,77,166,.4);
+  max-width:520px;width:90%;
   text-align:center;
 }
-
-/* HERO */
-.hero{
-  width:100%;
-  max-height:55vh;
-  object-fit:cover;
-  border-bottom:4px solid hotpink;
+h1{
+  font-family:'Dancing Script',cursive;
+  color:#ff9ad5;
+  font-size:2.6rem;
 }
-
-/* STARS BACKGROUND */
-#stars{
-  position:fixed;inset:0;
-  background:radial-gradient(white 1px, transparent 1px);
-  background-size:60px 60px;
-  opacity:.15;
-  animation:twinkle 4s infinite alternate;
-  z-index:-1;
-}
-@keyframes twinkle{from{opacity:.1}to{opacity:.35}}
-
-.section{padding:20px 10px}
-
-.card{
-  background:rgba(0,0,0,.75);
-  border-radius:25px;
-  padding:25px;
-  margin:20px auto;
-  max-width:520px;
-  box-shadow:0 0 40px hotpink;
-}
-
-h1{font-family:'Dancing Script',cursive;color:pink}
-
 button{
-  padding:12px 25px;
-  border-radius:30px;
-  border:none;
-  background:linear-gradient(45deg,pink,purple);
-  color:white;
+  padding:14px 30px;border-radius:40px;border:none;
+  background:linear-gradient(45deg,var(--pink),var(--purple));
+  color:white;font-weight:600;cursor:pointer;
+  box-shadow:0 8px 25px rgba(255,77,166,.5);
   margin:10px;
-  font-weight:bold;
 }
+button:hover{transform:scale(1.05)}
+input{
+  padding:14px;border-radius:20px;border:1px solid var(--pink);
+  background:rgba(255,255,255,.1);
+  color:white;width:90%;text-align:center;
+}
+.musicBtn{
+  position:fixed;top:20px;right:20px;
+  width:50px;height:50px;border-radius:50%;
+  font-size:20px;z-index:999;
+}
+.future-photo{
+  width:100%;border-radius:20px;
+  box-shadow:0 0 40px rgba(255,105,180,.6);
+  animation:kenburns 20s ease-in-out infinite alternate;
+}
+#noBtn{position:relative}
 
-img.future{
-  width:100%;
-  border-radius:15px;
-  margin:12px 0;
-  box-shadow:0 0 30px pink;
-}
-
-/* LOVE METER */
-#loveBar{
-  width:100%;height:20px;
-  background:#333;border-radius:10px;overflow:hidden;
-}
-#loveFill{
-  height:100%;width:0%;
-  background:linear-gradient(90deg,pink,hotpink);
-  transition:width 1s;
-}
-
-/* CONFETTI */
-.confetti{
+/* ===== Birthday Celebration Effects ===== */
+.bday-heart, .bday-confetti, .bday-sparkle{
   position:fixed;
-  width:8px;height:8px;
-  background:hotpink;
-  animation:fall 3s linear forwards;
-  z-index:999;
+  pointer-events:none;
+  z-index:50;
 }
-@keyframes fall{
-  from{transform:translateY(-10vh)}
-  to{transform:translateY(110vh)}
+.bday-heart{
+  font-size:20px;
+  animation: bdayFly 6s linear forwards;
+  opacity:.9;
+}
+@keyframes bdayFly{
+  from{transform:translateY(0) scale(.8); opacity:1;}
+  to{transform:translateY(-110vh) scale(1.4); opacity:0;}
+}
+.bday-confetti{
+  width:8px;height:8px;
+  background:gold;
+  animation:bdayFall 5s linear forwards;
+}
+@keyframes bdayFall{
+  from{transform:translateY(-10px) rotate(0deg);}
+  to{transform:translateY(110vh) rotate(360deg);}
+}
+.bday-sparkle{
+  width:4px;height:4px;
+  background:white;
+  border-radius:50%;
+  animation: bdayTwinkle 3s infinite alternate;
+}
+@keyframes bdayTwinkle{
+  from{opacity:.2;}
+  to{opacity:1;}
 }
 </style>
 </head>
 <body>
 
-<div id="stars"></div>
-
-<!-- HERO IMAGE (ALWAYS VISIBLE) -->
-<img class="hero" src="assets/images/hero-opening-love.jpg" alt="Hero">
+<div id="heroBg"></div>
 
 <!-- AUDIO -->
-<audio id="musicIntro" src="assets/music/bg-music-intro-meri-jaan.mp3" loop></audio>
-<audio id="musicRomantic" src="assets/music/bg-music-romantic-ambience.mp3" loop></audio>
-<audio id="musicFinal" src="assets/music/bg-music-final-letter.mp3" loop></audio>
-<audio id="sunnyMessage" src="assets/voice/sunnys-message.mp3"></audio>
+<audio id="musicIntro" src="assets/music/bg-music-intro-meri-jaan.mp3" preload="auto" loop></audio>
+<audio id="musicRomantic" src="assets/music/bg-music-romantic-ambience.mp3" preload="auto" loop></audio>
+<audio id="musicFinal" src="assets/music/bg-music-final-letter.mp3" preload="auto" loop></audio>
+<audio id="voiceNote" src="assets/voice/voice-note-final-message.m4a" preload="auto"></audio>
 
-<div class="section">
+<button class="musicBtn" onclick="toggleMusic()">🎵</button>
 
-<!-- PASSWORD -->
-<div class="card" id="passwordCard">
-  <h1>Secret Access 💜</h1>
-  <p>
+<!-- SCENE 1 PASSWORD -->
+<div class="scene active" id="scenePassword">
+  <div class="glass">
+    <h1>Secret Access 💜</h1>
+    <p style="font-size:13px;opacity:.8;">
 But I’ll love you forever, steady and strong.<br>
 With silly mistakes and a heart so true,<br>
 My whole imperfect world begins with you.<br><br>
 Who am I, with flaws and love so grand?
-  </p>
-  <input id="pw" placeholder="Enter password">
-  <br><br>
-  <button onclick="checkPW()">Unlock My Heart</button>
+    </p>
+    <input id="passwordInput" type="password" placeholder="Enter password">
+    <br><br>
+    <button onclick="checkPassword()">Unlock My Heart</button>
+  </div>
 </div>
 
-<!-- LIGHT -->
-<div class="card" id="lightCard" style="display:none">
-  <h1>Darkness 🌑</h1>
-  <button onclick="turnOn()">⚡ Turn On Light</button>
+<!-- SCENE 2 LIGHT -->
+<div class="scene" id="sceneLight">
+  <div class="glass">
+    <h1>It’s dark without you…</h1>
+    <button onclick="goToSurprise()">💡 Turn the Light On</button>
+  </div>
 </div>
 
-<!-- COUNTDOWN -->
-<div class="card" id="countCard" style="display:none">
-  <h1>Get Ready 💖</h1>
-  <div id="count" style="font-size:70px">10</div>
+<!-- SCENE 3 SURPRISE -->
+<div class="scene" id="sceneSurprise">
+  <div class="glass">
+    <h1>Are you ready for the surprise? 😘</h1>
+    <button onclick="startCountdown()">YES 💖</button>
+    <button id="noBtn">NO 🙄</button>
+  </div>
 </div>
 
-<!-- BIRTHDAY -->
-<div class="card" id="birthdayCard" style="display:none">
-  <h1>🎉 Happy Birthday Minny 🎂💜</h1>
-  <p>You are my queen 👑</p>
-  <button onclick="goFuture()">Our Journey 📸</button>
+<!-- SCENE 4 COUNTDOWN -->
+<div class="scene" id="sceneCountdown">
+  <div class="glass">
+    <h1>Just for you my love</h1>
+    <div id="countNum" style="font-size:90px;">10</div>
+    <div id="countMsg" style="margin-top:10px;font-size:18px;color:#ffb6e6;"></div>
+  </div>
 </div>
 
-<!-- FUTURE GALLERY -->
-<div class="card" id="futureCard" style="display:none">
-  <h1>Our Journey Together 💞</h1>
-
-  <h3>Year 1</h3>
-  <img class="future" src="assets/images/future-photo-traditional-evening.png">
-
-  <h3>Year 2</h3>
-  <img class="future" src="assets/images/scene-romantic-sky-couple.png">
-
-  <h3>Year 3</h3>
-  <img class="future" src="assets/images/scene-romantic-generated.png">
-
-  <button onclick="goLove()">Fill Our Love 💗</button>
+<!-- SCENE 5 BIRTHDAY -->
+<div class="scene" id="sceneBirthday">
+  <div class="glass">
+    <h1>Happy Birthday Minny 🎂💜</h1>
+    <p>31 January 2026</p>
+    <button onclick="showFuture()">Next Surprise ✨</button>
+  </div>
 </div>
 
-<!-- LOVE METER -->
-<div class="card" id="loveCard" style="display:none">
-  <h1>Love Potion 💖</h1>
-  <div id="loveBar"><div id="loveFill"></div></div>
-  <p id="loveTxt">0%</p>
-  <button onclick="addLove()">Add Love 💕</button>
+<!-- SCENE 6 FUTURE -->
+<div class="scene" id="sceneFuture">
+  <div class="glass">
+    <h1>Our Future Together 💖</h1>
+    <img class="future-photo" src="assets/images/future-photo-traditional-evening.png">
+    <p>
+No matter how many years pass, you will always be my home, my destiny, my forever.
+    </p>
+    <button onclick="showFinal()">Final Surprise 💌</button>
+  </div>
 </div>
 
-<!-- FINAL -->
-<div class="card" id="finalCard" style="display:none">
-  <h1>From Sunny 💜</h1>
-  <p>I love you forever Minny ❤️</p>
-  <button onclick="playSunny()">Play Sunny's Message 🎤</button>
-</div>
-
+<!-- SCENE 7 FINAL -->
+<div class="scene" id="sceneFinal">
+  <div class="glass">
+    <h1>My Love Letter 💜</h1>
+    <p style="white-space:pre-line;">
+Meri jaanu bubba i love you forever till i am alive my love 💓 ❤️ 😍
+my forever honey
+ill always be yours love ❤️
+    </p>
+    <button onclick="playVoice()">Play My Voice 🎤</button>
+  </div>
 </div>
 
 <script>
 const PASSWORD="Your imperfect husband";
-let love=0;
 
-function checkPW(){
-  if(pw.value.trim()===PASSWORD){
-    musicIntro.play();
-    passwordCard.style.display="none";
-    lightCard.style.display="block";
-  } else {
-    alert("Wrong password 💔");
+const intro=musicIntro;
+const romantic=musicRomantic;
+const finalMusic=musicFinal;
+const voice=voiceNote;
+let currentMusic=null;
+
+const loveLines=[
+"You are my forever 💜",
+"My heart chose you ❤️",
+"You are my destiny ✨",
+"My world begins with you 🌍",
+"You are my peace 🕊️",
+"My favorite human 😘",
+"My always and forever 💕",
+"You are my magic ✨",
+"My heartbeat says your name 💓",
+"This moment is just for you, my love 💖"
+];
+
+function switchMusic(track){
+  if(currentMusic && currentMusic!==track){
+    currentMusic.pause();
+    currentMusic.currentTime=0;
+  }
+  currentMusic=track;
+  currentMusic.volume=.7;
+  currentMusic.play();
+}
+function toggleMusic(){
+  if(currentMusic){
+    currentMusic.paused?currentMusic.play():currentMusic.pause();
   }
 }
+function showScene(id){
+  document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
 
-function turnOn(){
-  lightCard.style.display="none";
-  countCard.style.display="block";
-  startCountdown();
+  // Birthday effects ONLY on birthday page
+  if(id==='sceneBirthday'){
+    startBirthdayEffects();
+  } else {
+    stopBirthdayEffects();
+  }
 }
-
+function checkPassword(){
+  if(passwordInput.value.trim()===PASSWORD){
+    switchMusic(intro);
+    showScene('sceneLight');
+  } else alert("Wrong password baby 💔 Try again.");
+}
+function goToSurprise(){
+  showScene('sceneSurprise');
+  setupRunningNo();
+}
+function setupRunningNo(){
+  const no=document.getElementById('noBtn');
+  no.onmouseover=no.onclick=()=>{
+    const x=Math.random()*200-100;
+    const y=Math.random()*200-100;
+    no.style.transform=`translate(${x}px,${y}px)`;
+  };
+}
 function startCountdown(){
+  showScene('sceneCountdown');
   let n=10;
-  count.textContent=n;
+  countNum.textContent=n;
+  countMsg.textContent=loveLines[0];
   const t=setInterval(()=>{
     n--;
-    count.textContent=n;
     if(n<=0){
       clearInterval(t);
-      countCard.style.display="none";
-      birthdayCard.style.display="block";
-      musicIntro.pause();
-      musicRomantic.play();
-      spawnConfetti();   // 🎉 celebration
+      showScene('sceneBirthday');
+      return;
     }
-  },1000);
+    countNum.textContent=n;
+    countMsg.textContent=loveLines[10-n];
+  },1200);
+}
+function showFuture(){
+  switchMusic(musicRomantic);
+  showScene('sceneFuture');
+}
+function showFinal(){
+  switchMusic(finalMusic);
+  showScene('sceneFinal');
+}
+function playVoice(){
+  if(currentMusic) currentMusic.volume=.2;
+  voice.play();
+  voice.onended=()=>{
+    if(currentMusic) currentMusic.volume=.7;
+  };
 }
 
-function goFuture(){
-  birthdayCard.style.display="none";
-  futureCard.style.display="block";
+/* ===== Birthday Animations ONLY ===== */
+let bdayInterval=null;
+
+function startBirthdayEffects(){
+  stopBirthdayEffects();
+  bdayInterval=setInterval(()=>{
+    createBdayHeart();
+    createBdayConfetti();
+    createBdaySparkle();
+  },300);
 }
 
-function goLove(){
-  futureCard.style.display="none";
-  loveCard.style.display="block";
+function stopBirthdayEffects(){
+  if(bdayInterval) clearInterval(bdayInterval);
 }
 
-function addLove(){
-  love=Math.min(100,love+25);
-  loveFill.style.width=love+'%';
-  loveTxt.textContent=love+'%';
-  if(love===100){
-    musicRomantic.pause();
-    musicFinal.play();
-    loveCard.style.display="none";
-    finalCard.style.display="block";
-    spawnConfetti();   // 💥 big celebration
-  }
+function createBdayHeart(){
+  const h=document.createElement("div");
+  h.className="bday-heart";
+  h.textContent="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.bottom="-20px";
+  h.style.fontSize=(16+Math.random()*20)+"px";
+  h.style.animationDuration=(4+Math.random()*4)+"s";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),7000);
 }
 
-function playSunny(){
-  sunnyMessage.play();
+function createBdayConfetti(){
+  const c=document.createElement("div");
+  c.className="bday-confetti";
+  c.style.left=Math.random()*100+"vw";
+  c.style.top="-10px";
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),6000);
 }
 
-/* CONFETTI ANIMATION */
-function spawnConfetti(){
-  for(let i=0;i<40;i++){
-    const c=document.createElement('div');
-    c.className='confetti';
-    c.style.left=Math.random()*100+'vw';
-    c.style.background=['hotpink','pink','purple','white'][Math.floor(Math.random()*4)];
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),3000);
-  }
+function createBdaySparkle(){
+  const s=document.createElement("div");
+  s.className="bday-sparkle";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  document.body.appendChild(s);
+  setTimeout(()=>s.remove(),4000);
 }
 </script>
-
 </body>
 </html>
